@@ -26,11 +26,16 @@ namespace TestBot.Bots
         {
             await base.OnTurnAsync(turnContext, cancellationToken);
 
-            await ConversationState.SaveChangesAsync(turnContext, false, cancellationToken);
-            await UserState.SaveChangesAsync(turnContext, false, cancellationToken);
-            await turnContext.SendActivityAsync("Hello there, Please enter your name");
-            
-            
+            if (turnContext.Activity.Type== ActivityTypes.Message)
+            {
+                await ConversationState.SaveChangesAsync(turnContext, false, cancellationToken);
+                await UserState.SaveChangesAsync(turnContext, false, cancellationToken);
+            }
+            else
+            {
+                await turnContext.SendActivityAsync("Hello there, I am here to help.");
+            }
+           
         }
 
         protected override async Task OnMessageActivityAsync(ITurnContext<IMessageActivity> turnContext, CancellationToken cancellationToken)
